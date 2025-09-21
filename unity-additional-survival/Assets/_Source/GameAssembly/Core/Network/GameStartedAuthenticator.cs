@@ -27,15 +27,11 @@ namespace Core.Network
         public override void OnServerAuthenticate(NetworkConnectionToClient conn)
         {
             if (_isGameStarted)
-            {
-                Debug.Log("Game is started - Rejecting connection");
                 StartCoroutine(DelayedReject(conn));
-            }
             else
             {
                 conn.Send(new AuthResponseMessage { Code = CODE_SUCCESS });
                 ServerAccept(conn);
-                Debug.Log("Game not started - Accepting connection");
             }
         }
 
