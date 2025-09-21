@@ -11,6 +11,7 @@ namespace Player
         
         [Inject] private InputSystem_Actions _input;
         private Rigidbody2D _rb;
+        private Vector2 _movement;
         
         private void Start()
         {
@@ -20,10 +21,19 @@ namespace Player
 
         private void Update()
         {
-            if(!isLocalPlayer)
+            if (!isLocalPlayer)
                 return;
-            
-            Move(_input.Player.Move.ReadValue<Vector2>());
+
+            _movement = _input.Player.Move.ReadValue<Vector2>();
+        }
+
+        private void FixedUpdate()
+        {
+            if (!isLocalPlayer)
+                return;
+
+            var moveVector = (Vector2)transform.position + _movement * (speed * Time.fixedDeltaTime);
+            _rb.MovePosition(moveVector);
         }
 
         private void Move(Vector2 movement)

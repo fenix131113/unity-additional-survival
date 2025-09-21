@@ -22,7 +22,7 @@ namespace GameMenu
 
         private void OnHostButtonClicked() => _network.StartAsHost();
 
-        private void OnConnectButtonClicked() => _network.StartAsClient("localhost", 7777);
+        private void OnConnectButtonClicked() => _network.StartAsClient("26.49.156.113", 7777);
 
         private void Bind()
         {
