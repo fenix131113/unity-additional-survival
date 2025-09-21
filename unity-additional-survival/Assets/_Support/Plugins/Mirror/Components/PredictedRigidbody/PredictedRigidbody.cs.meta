@@ -18,5 +18,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Components/PredictedRigidbody/PredictedRigidbody.cs
+  assetPath: Assets/_Support/Plugins/Mirror/Components/PredictedRigidbody/PredictedRigidbody.cs
   uploadId: 736421

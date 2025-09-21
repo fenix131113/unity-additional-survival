@@ -5,5 +5,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Transports/SimpleWeb/.cert.example.Json
+  assetPath: Assets/_Support/Plugins/Mirror/Transports/SimpleWeb/.cert.example.Json
   uploadId: 736421

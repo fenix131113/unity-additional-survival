@@ -14,5 +14,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Components/Discovery/NetworkDiscoveryBase.cs
+  assetPath: Assets/_Support/Plugins/Mirror/Components/Discovery/NetworkDiscoveryBase.cs
   uploadId: 736421

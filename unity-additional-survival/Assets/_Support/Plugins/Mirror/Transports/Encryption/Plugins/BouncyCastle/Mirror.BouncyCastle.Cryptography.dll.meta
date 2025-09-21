@@ -36,5 +36,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Transports/Encryption/Plugins/BouncyCastle/Mirror.BouncyCastle.Cryptography.dll
+  assetPath: Assets/_Support/Plugins/Mirror/Transports/Encryption/Plugins/BouncyCastle/Mirror.BouncyCastle.Cryptography.dll
   uploadId: 736421

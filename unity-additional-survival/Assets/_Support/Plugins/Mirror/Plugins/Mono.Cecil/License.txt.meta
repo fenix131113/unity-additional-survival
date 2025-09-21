@@ -10,5 +10,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Plugins/Mono.Cecil/License.txt
+  assetPath: Assets/_Support/Plugins/Mirror/Plugins/Mono.Cecil/License.txt
   uploadId: 736421

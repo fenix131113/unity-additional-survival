@@ -6,5 +6,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Components/Profiling/NetworkGraphStacked.shader
+  assetPath: Assets/_Support/Plugins/Mirror/Components/Profiling/NetworkGraphStacked.shader
   uploadId: 736421

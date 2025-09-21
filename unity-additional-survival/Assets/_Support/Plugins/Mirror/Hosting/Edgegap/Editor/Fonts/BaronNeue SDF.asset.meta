@@ -11,5 +11,6 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Hosting/Edgegap/Editor/Fonts/BaronNeue SDF.asset
+  assetPath: Assets/_Support/Plugins/Mirror/Hosting/Edgegap/Editor/Fonts/BaronNeue
+    SDF.asset
   uploadId: 736421

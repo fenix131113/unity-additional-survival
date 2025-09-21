@@ -11,5 +11,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Components/PredictedRigidbody/LocalGhostMaterial.mat
+  assetPath: Assets/_Support/Plugins/Mirror/Components/PredictedRigidbody/LocalGhostMaterial.mat
   uploadId: 736421

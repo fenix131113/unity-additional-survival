@@ -113,5 +113,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Editor/Icon/MirrorIcon.png
+  assetPath: Assets/_Support/Plugins/Mirror/Editor/Icon/MirrorIcon.png
   uploadId: 736421

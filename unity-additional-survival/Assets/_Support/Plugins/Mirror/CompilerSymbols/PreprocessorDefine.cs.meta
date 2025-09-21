@@ -14,5 +14,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/CompilerSymbols/PreprocessorDefine.cs
+  assetPath: Assets/_Support/Plugins/Mirror/CompilerSymbols/PreprocessorDefine.cs
   uploadId: 736421

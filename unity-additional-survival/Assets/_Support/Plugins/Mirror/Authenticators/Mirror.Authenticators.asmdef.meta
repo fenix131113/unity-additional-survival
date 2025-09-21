@@ -10,5 +10,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Authenticators/Mirror.Authenticators.asmdef
+  assetPath: Assets/_Support/Plugins/Mirror/Authenticators/Mirror.Authenticators.asmdef
   uploadId: 736421

@@ -14,5 +14,5 @@ AssetOrigin:
   productId: 129321
   packageName: Mirror
   packageVersion: 96.0.1
-  assetPath: Assets/Mirror/Components/InterestManagement/Distance/DistanceInterestManagementCustomRange.cs
+  assetPath: Assets/_Support/Plugins/Mirror/Components/InterestManagement/Distance/DistanceInterestManagementCustomRange.cs
   uploadId: 736421
