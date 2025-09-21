@@ -32,9 +32,10 @@ namespace GameMenu
             OnPlayersListChanged?.Invoke(_playersList.ToList());
         }
 
-        public override void OnStopClient()
+        private void OnDisable()
         {
-            lobbyPanel.SetActive(false);
+            if (lobbyPanel)
+                lobbyPanel.SetActive(false);
         }
 
         private void PlayersListChanged(SyncList<string>.Operation op, int index, string value, string newValue) =>

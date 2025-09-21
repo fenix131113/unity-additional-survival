@@ -13,7 +13,7 @@ namespace Player
         
         private void Start()
         {
-            //ObjectInjector.InjectObject(this);
+            ObjectInjector.InjectObject(this);
         }
 
         private void Update()
@@ -21,7 +21,7 @@ namespace Player
             if(!isLocalPlayer)
                 return;
             
-            //Move(_input.Player.Move.ReadValue<Vector2>());
+            Move(_input.Player.Move.ReadValue<Vector2>());
         }
 
         private void Move(Vector2 movement)

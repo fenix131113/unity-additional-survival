@@ -1105,7 +1105,7 @@ namespace Mirror
             // cannot have a player object in "Add" version
             if (conn.identity != null)
             {
-                Debug.Log("AddPlayer: player object already exists");
+                Debug.Log($"AddPlayer: player object already exists. Name {conn.identity.name}");
                 return false;
             }
 

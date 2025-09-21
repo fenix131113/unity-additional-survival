@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Core;
+using Core.Network;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -21,7 +22,13 @@ namespace GameMenu
 
         private void Start() => playerLobby.OnPlayersListChanged += UpdateView;
 
-        private void OnStartButtonClicked() => NetworkManager.singleton.ServerChangeScene(SceneNames.GAME_SCENE);
+        private void OnStartButtonClicked()
+        {
+            if (NetworkManager.singleton.authenticator is GameStartedAuthenticator)
+                ((GameStartedAuthenticator)NetworkManager.singleton.authenticator).StartGame();
+            
+            NetworkManager.singleton.ServerChangeScene(SceneNames.GAME_SCENE);
+        }
 
         private void OnLeaveButtonClicked()
         {
@@ -30,7 +37,7 @@ namespace GameMenu
                 NetworkClient.Disconnect();
                 NetworkServer.Shutdown();
             }
-            else if(NetworkClient.active)
+            else if (NetworkClient.active)
                 NetworkClient.Disconnect();
         }
 

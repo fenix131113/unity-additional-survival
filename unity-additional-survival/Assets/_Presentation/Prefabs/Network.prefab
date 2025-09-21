@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 776843100795975052}
   - component: {fileID: 6095875627545476278}
   - component: {fileID: 5442687415483406326}
+  - component: {fileID: 9124343787633429434}
   m_Layer: 0
   m_Name: Network
   m_TagString: Untagged
@@ -58,12 +59,11 @@ MonoBehaviour:
   maxConnections: 4
   disconnectInactiveConnections: 0
   disconnectInactiveTimeout: 120
-  authenticator: {fileID: 0}
-  playerPrefab: {fileID: 0}
+  authenticator: {fileID: 9124343787633429434}
+  playerPrefab: {fileID: 2939467186402658877, guid: 6546cc16a758c2b48a4f1dfd21f658ba, type: 3}
   autoCreatePlayer: 0
   playerSpawnMethod: 0
   spawnPrefabs:
-  - {fileID: 2939467186402658877, guid: 6546cc16a758c2b48a4f1dfd21f658ba, type: 3}
   - {fileID: 4321084252887448338, guid: 5c170947e64756b42aed7c24087260b2, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
@@ -80,7 +80,7 @@ MonoBehaviour:
   evaluationMethod: 0
   evaluationInterval: 3
   timeInterpolationGui: 0
-  test: {fileID: 4321084252887448338, guid: 5c170947e64756b42aed7c24087260b2, type: 3}
+  lobbyPlayerPrefab: {fileID: 4321084252887448338, guid: 5c170947e64756b42aed7c24087260b2, type: 3}
 --- !u!114 &5442687415483406326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,3 +110,21 @@ MonoBehaviour:
   debugLog: 0
   statisticsGUI: 1
   statisticsLog: 0
+--- !u!114 &9124343787633429434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6481814160971777437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce8a76bcccf34cc4b3f52e6cf227ab7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::Core.Network.GameStartedAuthenticator
+  OnServerAuthenticated:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClientAuthenticated:
+    m_PersistentCalls:
+      m_Calls: []

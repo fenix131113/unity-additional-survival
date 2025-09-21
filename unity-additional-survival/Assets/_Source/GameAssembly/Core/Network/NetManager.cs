@@ -8,7 +8,7 @@ namespace Core.Network
 {
     public class NetManager : NetworkManager
     {
-        [SerializeField] private GameObject test;
+        [SerializeField] private GameObject lobbyPlayerPrefab;
 
         private PlayersLobby _playersLobby;
 
@@ -25,20 +25,34 @@ namespace Core.Network
         public override void OnStartServer()
         {
             NetworkServer.RegisterHandler<GlobalMessages.CreateLobbyPlayerMessage>(OnCreateLobbyCharacter);
+            NetworkServer.RegisterHandler<GlobalMessages.CreateGamePlayerMessage>(OnCreateGameCharacter);
+        }
+
+        public override void OnStopServer()
+        {
+            NetworkServer.UnregisterHandler<GlobalMessages.CreateLobbyPlayerMessage>();
+            NetworkServer.UnregisterHandler<GlobalMessages.CreateGamePlayerMessage>();
         }
 
         public override void OnClientConnect()
         {
             base.OnClientConnect();
+
             NetworkClient.Send(new GlobalMessages.CreateLobbyPlayerMessage()); // Works only at lobby
         }
 
-        public override void OnClientSceneChanged() 
+        public override void OnClientDisconnect()
+        {
+            if (SceneManager.GetActiveScene().name != SceneNames.MENU_SCENE)
+                SceneManager.LoadScene(SceneNames.MENU_SCENE);
+        }
+
+        public override void OnClientSceneChanged()
         {
             base.OnClientSceneChanged();
-            
-            if (SceneManager.GetActiveScene().name == SceneNames.GAME_SCENE)
-                NetworkClient.Send(new GlobalMessages.CreateLobbyPlayerMessage()); // Spawn player in game scene
+
+            if (networkSceneName == SceneNames.GAME_SCENE)
+                NetworkClient.Send(new GlobalMessages.CreateGamePlayerMessage()); // Spawn player in game scene
         }
 
         public override void OnServerConnect(NetworkConnectionToClient conn)
@@ -48,14 +62,25 @@ namespace Core.Network
 
         public override void OnServerDisconnect(NetworkConnectionToClient conn)
         {
+            NetworkServer.DestroyPlayerForConnection(conn);
             _playersLobby?.UnregisterPlayer(conn.connectionId.ToString());
         }
 
         private void OnCreateLobbyCharacter(NetworkConnectionToClient conn, GlobalMessages.CreateLobbyPlayerMessage _)
         {
-            var t = Instantiate(test);
-            NetworkServer.Spawn(t);
-            NetworkServer.AddPlayerForConnection(conn, t);
+            if(SceneManager.GetActiveScene().name != SceneNames.MENU_SCENE)
+                return;
+            
+            var created = Instantiate(lobbyPlayerPrefab);
+            NetworkServer.Spawn(created);
+            NetworkServer.AddPlayerForConnection(conn, created);
+        }
+
+        private void OnCreateGameCharacter(NetworkConnectionToClient conn, GlobalMessages.CreateGamePlayerMessage _)
+        {
+            var created = Instantiate(playerPrefab);
+            NetworkServer.Spawn(created);
+            NetworkServer.AddPlayerForConnection(conn, created);
         }
     }
 }
