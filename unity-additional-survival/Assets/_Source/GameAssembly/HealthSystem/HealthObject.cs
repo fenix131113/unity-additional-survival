@@ -1,4 +1,5 @@
 ﻿using System;
+using HealthSystem.Data;
 using Mirror;
 using UnityEngine;
 
@@ -8,14 +9,19 @@ namespace HealthSystem
     {
         [SerializeField] private int maxHealth;
         [SerializeField] private int startHealth;
+        [SerializeField] private bool instantDestroyOnDeath;
+
+        [field: SerializeField] public HealthType HealthType { get; private set; }
 
         [field: SyncVar(hook = nameof(ClientOnHealthChanged))]
         public int Health { get; private set; }
+
 
         /// <summary>
         /// Auto-Expose
         /// </summary>
         public event Action<int, int> OnHealthChanged;
+
         /// <summary>
         /// Auto-Expose
         /// </summary>
@@ -26,9 +32,11 @@ namespace HealthSystem
         private void ClientOnHealthChanged(int oldValue, int newValue)
         {
             OnHealthChanged?.Invoke(oldValue, newValue);
+
+            if (Health != 0)
+                return;
             
-            if(Health == 0)
-                OnDeath?.Invoke();
+            OnDeath?.Invoke();
         }
 
         #endregion
@@ -39,8 +47,10 @@ namespace HealthSystem
         [Server]
         public void ChangeHealth(int value)
         {
-            var newHealth = Mathf.Clamp(Health + value, 0, maxHealth);
-            Health = newHealth;
+            Health = Mathf.Clamp(Health + value, 0, maxHealth);
+
+            if (Health == 0 && instantDestroyOnDeath)
+                NetworkServer.Destroy(gameObject);
         }
 
         #endregion
