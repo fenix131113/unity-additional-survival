@@ -13,7 +13,7 @@ namespace InventorySystem
 
         #region Server
 
-        private void OnTriggerEnter2D(Collider2D other)
+        protected virtual void OnTriggerEnter2D(Collider2D other)
         {
             if(!isServer || !LayerService.CheckLayersEquality(other.gameObject.layer, LayersBase.LayersData.PlayerLayer))
                 return;
