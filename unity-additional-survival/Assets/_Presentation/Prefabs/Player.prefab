@@ -200,7 +200,7 @@ MonoBehaviour:
   attackBoxWidth: 0.75
   attackBoxHeight: 1
   anim: {fileID: 5503883917182694357}
-  attackCooldown: 0.5
+  attackCooldown: 0.3
   meleeDamage: 1
   attackTypes: 0204
 --- !u!114 &4276875359232443914
