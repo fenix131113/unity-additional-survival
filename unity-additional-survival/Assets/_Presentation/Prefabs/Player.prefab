@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 560000634304326087}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6363, y: 0, z: 0}
+  m_LocalPosition: {x: 0.7613, y: 0, z: 0}
   m_LocalScale: {x: 0.6395862, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: -446701588625430383}
   - component: {fileID: 3368459893437982592}
   - component: {fileID: 7919317998143055573}
+  - component: {fileID: 656851942868827389}
   - component: {fileID: 4276875359232443914}
   - component: {fileID: 5503883917182694357}
   - component: {fileID: 1337505704383698240}
@@ -203,6 +204,24 @@ MonoBehaviour:
   attackCooldown: 0.3
   meleeDamage: 1
   attackTypes: 0204
+--- !u!114 &656851942868827389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939467186402658877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 495d2b426057481a9ae47d97a4644e30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::Player.PlayerInventory
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  allowItemsList:
+  - {fileID: 11400000, guid: 803345b934ba93044ba8a1fcea7c6c0c, type: 2}
+  - {fileID: 11400000, guid: 0eb303595c418f949b99a91a170fc8e1, type: 2}
 --- !u!114 &4276875359232443914
 MonoBehaviour:
   m_ObjectHideFlags: 0

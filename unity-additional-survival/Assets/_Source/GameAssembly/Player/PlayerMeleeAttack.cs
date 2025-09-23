@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
-using HealthSystem;
 using HealthSystem.Data;
 using Mirror;
 using UnityEngine;

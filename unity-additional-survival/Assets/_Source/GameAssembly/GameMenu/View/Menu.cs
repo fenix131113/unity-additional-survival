@@ -3,7 +3,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameMenu
+namespace GameMenu.View
 {
     public class Menu : MonoBehaviour
     {
