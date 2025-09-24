@@ -14,7 +14,6 @@ namespace Player
 {
     public class PlayerMeleeAttack : NetworkBehaviour
     {
-        private const byte LOCAL_HIT_SUCCESS_CODE = 100;
         private static readonly int _hit = Animator.StringToHash("Hit");
 
         [SerializeField] private PlayerAim playerAim;
@@ -29,19 +28,6 @@ namespace Player
         [Inject] private InputSystem_Actions _input;
         private bool _canAttack = true;
 
-        #region Messages
-
-        private struct LocalHitRequest : NetworkMessage
-        {
-        }
-
-        private struct LocalHitResponse : NetworkMessage
-        {
-            public byte Code;
-        }
-
-        #endregion
-
         #region Client
 
         private void Start()
@@ -50,7 +36,6 @@ namespace Player
                 return;
 
             ObjectInjector.InjectObject(this);
-            NetworkClient.RegisterHandler<LocalHitResponse>(OnLocalHitResponse);
 
             if (isServerOnly)
                 return;
@@ -66,18 +51,7 @@ namespace Player
             Expose();
         }
 
-        private void OnHitInput(InputAction.CallbackContext context)
-        {
-            NetworkClient.Send(new LocalHitRequest());
-            Cmd_Attack();
-        }
-
-        private void OnLocalHitResponse(LocalHitResponse response)
-        {
-            if (response.Code == LOCAL_HIT_SUCCESS_CODE)
-                anim.animator.SetTrigger(_hit);
-        }
-
+        private void OnHitInput(InputAction.CallbackContext context) => Cmd_Attack();
         private void Bind() => _input.Player.Hit.performed += OnHitInput;
 
         private void Expose() => _input.Player.Hit.performed -= OnHitInput;
@@ -87,7 +61,10 @@ namespace Player
         #region Server
 
         [Command]
-        private void Cmd_Attack() => AttackMelee();
+        private void Cmd_Attack()
+        {
+            AttackMelee();
+        }
 
         [Server]
         private void AttackMelee()
@@ -110,14 +87,6 @@ namespace Player
             {
                 h.ChangeHealth(-meleeDamage);
             }
-        }
-
-        public override void OnStartServer() => NetworkServer.RegisterHandler<LocalHitRequest>(OnLocalHitRequest);
-
-        private void OnLocalHitRequest(NetworkConnectionToClient conn, LocalHitRequest request)
-        {
-            if (_canAttack)
-                conn.Send(new LocalHitResponse { Code = LOCAL_HIT_SUCCESS_CODE });
         }
 
         private IEnumerator AttackCooldown()
