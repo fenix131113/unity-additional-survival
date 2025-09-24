@@ -247,8 +247,8 @@ MonoBehaviour:
   rb: {fileID: 5526280148663299200}
   moveForceEdge: 2
   moveExceptForce: 0.5
-  rotateForceEdge: 1
-  rotateExceptForce: 0.3
+  rotateForceEdge: 0.8
+  rotateExceptForce: 0.2
 --- !u!114 &3285871178032775474
 MonoBehaviour:
   m_ObjectHideFlags: 0

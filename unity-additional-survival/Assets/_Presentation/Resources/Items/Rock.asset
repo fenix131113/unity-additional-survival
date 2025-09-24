@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: GameAssembly::InventorySystem.Data.ItemDataSO
   <ID>k__BackingField: 0
   <ItemName>k__BackingField: Rock
-  <Icon>k__BackingField: {fileID: 0}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 9acd4b9d2dc8f6f41a8d47234b0a857b, type: 3}
   <MaxCount>k__BackingField: 9999

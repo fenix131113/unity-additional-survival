@@ -8,7 +8,7 @@ namespace InventorySystem
 {
     public static class ItemsDatabase
     {
-        private static List<ItemDataSO> _database = new();
+        private static readonly Dictionary<int, ItemDataSO> _database = new();
 
         private static bool _initialized;
 
@@ -16,7 +16,8 @@ namespace InventorySystem
         {
             var loaded = Resources.LoadAll<ItemDataSO>("Items");
 
-            _database = loaded.ToList();
+            foreach (var item in loaded)
+                _database.Add(item.ID, item);
 
             _initialized = true;
         }
@@ -26,7 +27,7 @@ namespace InventorySystem
             if(!_initialized)
                 InitDatabase();
             
-            var find = _database.Find(x => x.ID == id);
+            var find = _database[id];
 
 #if UNITY_EDITOR
             if (!find)
