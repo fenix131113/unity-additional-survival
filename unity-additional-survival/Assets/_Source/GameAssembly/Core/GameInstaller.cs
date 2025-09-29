@@ -4,6 +4,7 @@ using Utils;
 using Utils.Data;
 using VContainer;
 using VContainer.Unity;
+using WeaponSystem;
 
 namespace Core
 {
@@ -25,6 +26,7 @@ namespace Core
 
             #region Utils
 
+            builder.RegisterComponentInHierarchy<BulletsPool>();
             LayersBase.InitLayersBase(layersDataSO);
 
             #endregion

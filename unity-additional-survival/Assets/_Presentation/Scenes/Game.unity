@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 88553492}
   - component: {fileID: 88553491}
   - component: {fileID: 88553490}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tree (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -449,7 +449,7 @@ GameObject:
   - component: {fileID: 115721442}
   - component: {fileID: 115721444}
   - component: {fileID: 115721445}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 214130669}
   - component: {fileID: 214130668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -773,7 +773,7 @@ GameObject:
   - component: {fileID: 564576331}
   - component: {fileID: 564576332}
   - component: {fileID: 564576333}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1260,7 +1260,7 @@ GameObject:
   m_Component:
   - component: {fileID: 750116612}
   - component: {fileID: 750116611}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1350,7 +1350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 811177548}
   - component: {fileID: 811177549}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1440,7 +1440,7 @@ GameObject:
   m_Component:
   - component: {fileID: 928062023}
   - component: {fileID: 928062022}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1534,7 +1534,7 @@ GameObject:
   - component: {fileID: 942109050}
   - component: {fileID: 942109049}
   - component: {fileID: 942109048}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1678,7 +1678,7 @@ GameObject:
   - component: {fileID: 978627668}
   - component: {fileID: 978627670}
   - component: {fileID: 978627669}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1831,7 +1831,7 @@ GameObject:
   m_Component:
   - component: {fileID: 979956928}
   - component: {fileID: 979956927}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1925,7 +1925,7 @@ GameObject:
   - component: {fileID: 992314645}
   - component: {fileID: 992314644}
   - component: {fileID: 992314643}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tree (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2238,6 +2238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109459571}
   - component: {fileID: 1109459570}
+  - component: {fileID: 1109459572}
   m_Layer: 0
   m_Name: GENERAL
   m_TagString: Untagged
@@ -2282,6 +2283,18 @@ Transform:
   - {fileID: 585017069}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1109459572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109459569}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba7938650aec45c79af23b42265d5383, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::WeaponSystem.BulletsPool
 --- !u!1 &1116883676
 GameObject:
   m_ObjectHideFlags: 0
@@ -2293,7 +2306,7 @@ GameObject:
   - component: {fileID: 1116883677}
   - component: {fileID: 1116883679}
   - component: {fileID: 1116883678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2567,7 +2580,7 @@ GameObject:
   - component: {fileID: 1222126267}
   - component: {fileID: 1222126266}
   - component: {fileID: 1222126265}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tree (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2710,7 +2723,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1224773643}
   - component: {fileID: 1224773642}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2800,7 +2813,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1249106621}
   - component: {fileID: 1249106622}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2984,7 +2997,7 @@ GameObject:
   - component: {fileID: 1300485921}
   - component: {fileID: 1300485920}
   - component: {fileID: 1300485919}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Tree (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3311,7 +3324,7 @@ GameObject:
   - component: {fileID: 1446032701}
   - component: {fileID: 1446032700}
   - component: {fileID: 1446032699}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3455,7 +3468,7 @@ GameObject:
   - component: {fileID: 1467032114}
   - component: {fileID: 1467032116}
   - component: {fileID: 1467032115}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3609,7 +3622,7 @@ GameObject:
   - component: {fileID: 1543105014}
   - component: {fileID: 1543105016}
   - component: {fileID: 1543105015}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3762,7 +3775,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1598172070}
   - component: {fileID: 1598172069}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3852,7 +3865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1749913169}
   - component: {fileID: 1749913168}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: HitColor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3942,7 +3955,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1787529311}
   - component: {fileID: 1787529310}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: VisualRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4036,7 +4049,7 @@ GameObject:
   - component: {fileID: 1965192940}
   - component: {fileID: 1965192942}
   - component: {fileID: 1965192943}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4278,7 +4291,7 @@ GameObject:
   - component: {fileID: 2090974947}
   - component: {fileID: 2090974946}
   - component: {fileID: 2090974945}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4425,7 +4438,7 @@ GameObject:
   - component: {fileID: 2147432142}
   - component: {fileID: 2147432141}
   - component: {fileID: 2147432140}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rock (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
