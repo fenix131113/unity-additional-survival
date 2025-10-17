@@ -120,6 +120,15 @@ namespace Player
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BuildMode"",
+                    ""type"": ""Button"",
+                    ""id"": ""ff29dfd2-1cb2-45cd-b078-f8bdf5372e65"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -199,6 +208,17 @@ namespace Player
                     ""action"": ""Hit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16f520ee-f677-4612-9470-80444d74e201"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""BuildMode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -271,6 +291,7 @@ namespace Player
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
             m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
             m_Player_Hit = m_Player.FindAction("Hit", throwIfNotFound: true);
+            m_Player_BuildMode = m_Player.FindAction("BuildMode", throwIfNotFound: true);
         }
 
         ~@InputSystem_Actions()
@@ -354,6 +375,7 @@ namespace Player
         private readonly InputAction m_Player_Move;
         private readonly InputAction m_Player_Shoot;
         private readonly InputAction m_Player_Hit;
+        private readonly InputAction m_Player_BuildMode;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -377,6 +399,10 @@ namespace Player
             /// Provides access to the underlying input action "Player/Hit".
             /// </summary>
             public InputAction @Hit => m_Wrapper.m_Player_Hit;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/BuildMode".
+            /// </summary>
+            public InputAction @BuildMode => m_Wrapper.m_Player_BuildMode;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -412,6 +438,9 @@ namespace Player
                 @Hit.started += instance.OnHit;
                 @Hit.performed += instance.OnHit;
                 @Hit.canceled += instance.OnHit;
+                @BuildMode.started += instance.OnBuildMode;
+                @BuildMode.performed += instance.OnBuildMode;
+                @BuildMode.canceled += instance.OnBuildMode;
             }
 
             /// <summary>
@@ -432,6 +461,9 @@ namespace Player
                 @Hit.started -= instance.OnHit;
                 @Hit.performed -= instance.OnHit;
                 @Hit.canceled -= instance.OnHit;
+                @BuildMode.started -= instance.OnBuildMode;
+                @BuildMode.performed -= instance.OnBuildMode;
+                @BuildMode.canceled -= instance.OnBuildMode;
             }
 
             /// <summary>
@@ -558,6 +590,13 @@ namespace Player
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnHit(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "BuildMode" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnBuildMode(InputAction.CallbackContext context);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Core;
+using Core.GameStatesSystem;
 using HealthSystem.Data;
 using Mirror;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace Player
         [SerializeField] private List<HealthType> attackTypes;
 
         [Inject] private InputSystem_Actions _input;
+        [Inject] private GameStates _gameStates;
         private bool _canAttack = true;
 
         #region Client
@@ -51,7 +53,12 @@ namespace Player
             Expose();
         }
 
-        private void OnHitInput(InputAction.CallbackContext context) => Cmd_Attack();
+        private void OnHitInput(InputAction.CallbackContext context)
+        {
+            if(_gameStates.PlayerAttack)
+                Cmd_Attack();
+        }
+
         private void Bind() => _input.Player.Hit.performed += OnHitInput;
 
         private void Expose() => _input.Player.Hit.performed -= OnHitInput;

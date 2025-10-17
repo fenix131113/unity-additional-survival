@@ -1,4 +1,6 @@
-﻿using Player;
+﻿using BuildingSystem;
+using Core.GameStatesSystem;
+using Player;
 using UnityEngine;
 using Utils;
 using Utils.Data;
@@ -16,11 +18,23 @@ namespace Core
 
         protected override void Configure(IContainerBuilder builder)
         {
+            #region Core
+
+            builder.Register<GameStates>(Lifetime.Scoped);
+
+            #endregion
+            
             #region Player
             
             _input = new InputSystem_Actions();
             _input.Player.Enable();
             builder.RegisterInstance(_input);
+
+            #endregion
+
+            #region Building
+
+            builder.RegisterComponentInHierarchy<ServerBuilding>();
 
             #endregion
 

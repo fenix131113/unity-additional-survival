@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Core;
+using Core.GameStatesSystem;
 using Mirror;
 using UnityEngine;
 using VContainer;
@@ -11,6 +12,8 @@ namespace Player
     {
         [Inject] private InputSystem_Actions _input;
         [Inject] private BulletsPool _bulletsPool;
+        [Inject] private GameStates _gameStates;
+        
         private PlayerWeapons _weapons;
         private PlayerAim _aim;
         
@@ -38,7 +41,7 @@ namespace Player
 
         private void OnShoot()
         {
-            if(!_canShoot)
+            if(!_canShoot || !_gameStates.PlayerAttack)
                 return;
             
             Cmd_Shoot();

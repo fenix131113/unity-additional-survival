@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Core;
+using Core.GameStatesSystem;
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -20,6 +21,7 @@ namespace Player
         [SerializeField] private List<Weapon> startWeapons;
         [SerializeField] private Transform weaponsContainer;
         [Inject] private InputSystem_Actions _input;
+        [Inject] private GameStates _gameStates;
         private bool _canChangeWeapon = true;
 
         private readonly List<Weapon> _allowWeapons = new();
@@ -47,7 +49,7 @@ namespace Player
 
         private void Update()
         {
-            if (!isLocalPlayer || !_input.Player.enabled || !_canChangeWeapon)
+            if (!isLocalPlayer || !_input.Player.enabled || !_canChangeWeapon || !_gameStates.PlayerWeaponSwitch)
                 return;
 
             int newIndex;

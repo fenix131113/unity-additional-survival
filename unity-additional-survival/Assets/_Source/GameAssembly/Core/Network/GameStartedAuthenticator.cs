@@ -8,7 +8,7 @@ namespace Core.Network
     {
         private const byte CODE_SUCCESS = 100;
         private const byte CODE_REJECT = 0;
-        
+
         private bool _isGameStarted;
 
         public void StartGame() => _isGameStarted = true;
@@ -21,7 +21,7 @@ namespace Core.Network
         }
 
         #endregion
-        
+
         #region Server
 
         public override void OnServerAuthenticate(NetworkConnectionToClient conn)
@@ -38,9 +38,9 @@ namespace Core.Network
         private IEnumerator DelayedReject(NetworkConnectionToClient conn)
         {
             conn.Send(new AuthResponseMessage { Code = CODE_REJECT });
-            
+
             yield return new WaitForSeconds(1f);
-            
+
             ServerReject(conn);
         }
 
@@ -48,7 +48,8 @@ namespace Core.Network
 
         #region Client
 
-        public override void OnStartClient() => NetworkClient.RegisterHandler<AuthResponseMessage>(OnAuthResponse, false);
+        public override void OnStartClient() =>
+            NetworkClient.RegisterHandler<AuthResponseMessage>(OnAuthResponse, false);
 
         public override void OnStopClient() => NetworkClient.UnregisterHandler<AuthResponseMessage>();
 
@@ -60,7 +61,9 @@ namespace Core.Network
                     ClientAccept();
                     break;
                 case CODE_REJECT:
+#if UNITY_EDITOR
                     Debug.Log("Can't join, game is already started!");
+#endif
                     ClientReject();
                     break;
             }
