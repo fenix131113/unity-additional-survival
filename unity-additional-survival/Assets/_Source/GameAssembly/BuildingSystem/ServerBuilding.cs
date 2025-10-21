@@ -80,20 +80,20 @@ namespace BuildingSystem
             return _allowPos.ContainsKey((Vector2Int)converted);
         }
 
-        public bool IsEmptyCollision(Vector2 fixedPos, LayerMask blockLayers)
+        public bool IsEmptyCollision(Vector2 fixedPos, LayerMask blockLayers, float sizeOffset = 0)
         {
-            var hit = Physics2D.BoxCast(fixedPos, Vector2.one * GridSize, 0, Vector2.zero, float.PositiveInfinity,
+            var hit = Physics2D.BoxCast(fixedPos, Vector2.one * (GridSize - sizeOffset), 0, Vector2.zero, float.PositiveInfinity,
                 blockLayers);
 
             return !hit.transform;
         }
 
-        public bool IsEmptyCollision(Vector2 fixedPos)
+        public bool IsEmptyCollision(Vector2 fixedPos, float sizeOffset = 0)
         {
             var blockLayers = LayersBase.LayersData.PlayerLayer | LayersBase.LayersData.ResourceLayer |
                               LayersBase.LayersData.EnemyLayer |
                               LayersBase.LayersData.BuildingsLayer; // Default layers
-            return IsEmptyCollision(fixedPos, blockLayers);
+            return IsEmptyCollision(fixedPos, blockLayers, sizeOffset);
         }
         
         /// Works better with fixed position

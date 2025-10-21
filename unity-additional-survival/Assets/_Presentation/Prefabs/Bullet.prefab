@@ -114,7 +114,7 @@ MonoBehaviour:
   lifetime: 1
   triggerLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 448
 --- !u!114 &3111819703599678337
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -58,11 +58,19 @@ namespace WeaponSystem
                 return;
 
             var health = other.gameObject.GetComponent<IHealth>();
-            
+
             if (health == null)
+            {
+                Server_StopBullet();
                 return;
+            }
             
             health.ChangeHealth(-damage);
+            Server_StopBullet();
+        }
+
+        private void Server_StopBullet()
+        {
             StopAllCoroutines();
             Rpc_DeactivateBullet();
             _pool.AddToPool(_weapon, this);

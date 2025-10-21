@@ -9,10 +9,11 @@ namespace BuildingSystem
 {
     public class ClientBuild : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer testBuild;
+        [SerializeField] private SpriteRenderer testBuild; //TODO: Change
         [SerializeField] private Color placementAllowColor;
         [SerializeField] private Color placementBlockedColor;
         [SerializeField] private float placementColorAlpha;
+        [SerializeField] private float collisionCheckOffset = 0.02f;
 
         [Inject] private InputSystem_Actions _input;
         [Inject] private GameStates _gameState;
@@ -40,7 +41,7 @@ namespace BuildingSystem
                 testBuild.gameObject.SetActive(canPlace);
 
                 if(canPlace)
-                    canPlace = _serverBuilding.IsEmptyCollision(fixedPos);
+                    canPlace = _serverBuilding.IsEmptyCollision(fixedPos, collisionCheckOffset);
                 
                 _lastPlacementFixedPos = fixedPos;
                 testBuild.transform.position = _lastPlacementFixedPos;
