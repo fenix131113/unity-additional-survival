@@ -7,6 +7,7 @@ namespace Core.GameStatesSystem
     {
         public bool PlayerAttack { get; private set; } = true;
         public bool PlayerWeaponSwitch { get; private set; } = true;
+        public bool PlayerBuildModeChange { get; private set; } = true;
 
         private readonly Dictionary<BlockerType, List<FlagBlocker>> _blockers = new();
 
@@ -39,6 +40,9 @@ namespace Core.GameStatesSystem
                         break;
                     case BlockerType.PLAYER_WEAPON_SWITCH:
                         PlayerWeaponSwitch = setFlag;
+                        break;
+                    case BlockerType.PLAYER_BUILD_MODE_CHANGE:
+                        PlayerBuildModeChange = setFlag;
                         break;
 
                     default:

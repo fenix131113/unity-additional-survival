@@ -35,6 +35,8 @@ namespace Core
             #region Building
 
             builder.RegisterComponentInHierarchy<ServerBuilding>();
+            builder.RegisterComponentInHierarchy<ClientBuild>();
+            builder.RegisterComponentInHierarchy<BuildingSelector>();
 
             #endregion
 

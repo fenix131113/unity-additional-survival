@@ -12,7 +12,7 @@ namespace BuildingSystem
         [field: SerializeField] public float GridSize { get; private set; } = 0.64f;
         [SerializeField] private int gridZoneRadius;
 
-        private List<GameObject> _buildings = new();
+        private List<ABuilding> _buildings = new(); //TODO: Do something with this shit
         private readonly Dictionary<Vector2Int, Vector2> _allowPos = new();
 
         #region Client

@@ -4,5 +4,6 @@
     {
         PLAYER_ATTACK = 0,
         PLAYER_WEAPON_SWITCH = 1,
+        PLAYER_BUILD_MODE_CHANGE = 2,
     }
 }

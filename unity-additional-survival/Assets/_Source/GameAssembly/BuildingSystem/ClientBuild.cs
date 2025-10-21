@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core.GameStatesSystem;
 using Player;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace BuildingSystem
 {
     public class ClientBuild : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer testBuild; //TODO: Change
+        [SerializeField] private SpriteRenderer visualPlacementRender;
         [SerializeField] private Color placementAllowColor;
         [SerializeField] private Color placementBlockedColor;
         [SerializeField] private float placementColorAlpha;
@@ -18,10 +19,20 @@ namespace BuildingSystem
         [Inject] private InputSystem_Actions _input;
         [Inject] private GameStates _gameState;
         [Inject] private ServerBuilding _serverBuilding;
+        [Inject] private BuildingSelector _selector;
 
-        private bool _isInBuildMode;
         private Vector2 _lastPlacementFixedPos = Vector2.positiveInfinity;
         private readonly List<FlagBlocker> _buildBlockers = new();
+        
+        /// <summary>
+        /// Returns real values only on the client
+        /// </summary>
+        public bool IsInBuildMode { get; private set; }
+        
+        /// <summary>
+        /// Called only on the client
+        /// </summary>
+        public event Action OnBuildModeChanged;
 
         private void Start() => Bind();
 
@@ -29,7 +40,7 @@ namespace BuildingSystem
 
         private void Update()
         {
-            if (!_isInBuildMode)
+            if (!IsInBuildMode)
                 return;
 
             var cursorPos = Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue());
@@ -38,40 +49,54 @@ namespace BuildingSystem
             {
                 var canPlace = _serverBuilding.IsInBuildingZone(cursorPos, out var fixedPos);
 
-                testBuild.gameObject.SetActive(canPlace);
+                visualPlacementRender.gameObject.SetActive(canPlace);
 
                 if(canPlace)
                     canPlace = _serverBuilding.IsEmptyCollision(fixedPos, collisionCheckOffset);
                 
                 _lastPlacementFixedPos = fixedPos;
-                testBuild.transform.position = _lastPlacementFixedPos;
-                testBuild.color = canPlace ? placementAllowColor : placementBlockedColor;
+                visualPlacementRender.transform.position = _lastPlacementFixedPos;
+                visualPlacementRender.color = canPlace ? placementAllowColor : placementBlockedColor;
                 
-                var color = testBuild.color;
+                var color = visualPlacementRender.color;
                 color.a = placementColorAlpha;
-                testBuild.color = color;
+                visualPlacementRender.color = color;
             }
+        }
+
+        private void OnSelectedBuildingChanged()
+        {
+            visualPlacementRender.sprite = _selector.CurrentSelection.VisualRoot.sprite;
         }
 
         private void OnBuildPlaceClicked(InputAction.CallbackContext callbackContext)
         {
-            if(!_isInBuildMode)
+            if(!IsInBuildMode)
                 return;
+            
+            //TODO: Make place system and prevent block placement when click ui
         }
 
         private void OnBuildModeClicked(InputAction.CallbackContext callbackContext)
         {
-            if (_isInBuildMode)
+            if(!_gameState.PlayerBuildModeChange)
+                return;
+            
+            if (IsInBuildMode)
                 ExitBuildMode();
             else
                 EnterBuildMode();
+
+            _selector.OnBuildingModeChanged(IsInBuildMode);
+            OnBuildModeChanged?.Invoke();
         }
 
         private void EnterBuildMode()
         {
-            testBuild.gameObject.SetActive(true);
+            visualPlacementRender.sprite = _selector.CurrentSelection.VisualRoot.sprite;
+            visualPlacementRender.gameObject.SetActive(true);
 
-            _isInBuildMode = true;
+            IsInBuildMode = true;
             _buildBlockers.Add(new FlagBlocker(BlockerType.PLAYER_ATTACK));
             _gameState.RegisterBlocker(_buildBlockers[^1]);
             _buildBlockers.Add(new FlagBlocker(BlockerType.PLAYER_WEAPON_SWITCH));
@@ -80,9 +105,9 @@ namespace BuildingSystem
 
         private void ExitBuildMode()
         {
-            testBuild.gameObject.SetActive(false);
+            visualPlacementRender.gameObject.SetActive(false);
 
-            _isInBuildMode = false;
+            IsInBuildMode = false;
             _buildBlockers.ForEach(x => x.Dispose());
         }
 
@@ -90,12 +115,14 @@ namespace BuildingSystem
         {
             _input.Player.BuildMode.performed += OnBuildModeClicked;
             _input.Player.Shoot.performed += OnBuildPlaceClicked;
+            _selector.OnSelectionChanged += OnSelectedBuildingChanged;
         }
 
         private void Expose()
         {
             _input.Player.BuildMode.performed -= OnBuildModeClicked;
             _input.Player.Shoot.performed -= OnBuildPlaceClicked;
+            _selector.OnSelectionChanged -= OnSelectedBuildingChanged;
         }
     }
 }

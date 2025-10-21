@@ -7,14 +7,18 @@ namespace BuildingSystem
 {
     public abstract class ABuilding : NetworkBehaviour, IHealth
     {
+        [field: SerializeField] public SpriteRenderer VisualRoot { get; protected set; }
         [field: SerializeField] public HealthType HealthType { get; protected set; }
         
         [field: SyncVar(hook = nameof(OnHealthChangedClient))]
         public int Health { get; protected set; }
 
+        /// <summary>
+        /// Calls on the client 
+        /// </summary>
         public event Action<int, int> OnHealthChanged;
         /// <summary>
-        /// Called on the server
+        /// Calls on the server
         /// </summary>
         public event Action OnDeath;
 
@@ -23,7 +27,7 @@ namespace BuildingSystem
         /// <summary>
         /// Calls on clients
         /// </summary>
-        protected void OnHealthChangedClient(int oldHealth, int newHealth)
+        protected virtual void OnHealthChangedClient(int oldHealth, int newHealth)
         {
             OnHealthChanged?.Invoke(oldHealth, newHealth);
         }
@@ -42,7 +46,7 @@ namespace BuildingSystem
         }
 
         [Server]
-        protected void OnDeathLogic()
+        protected virtual void OnDeathLogic()
         {
             OnDeath?.Invoke();
         }
