@@ -13,7 +13,7 @@ using VContainer;
 
 namespace Player
 {
-    public class PlayerMeleeAttack : NetworkBehaviour
+    public class PlayerMeleeAttack : NetworkBehaviour, IHealthChangeSource
     {
         private static readonly int _hit = Animator.StringToHash("Hit");
 
@@ -92,7 +92,7 @@ namespace Player
                          .Select(x => x.transform.GetComponent<IHealth>())
                          .Where(x => attackTypes.Contains(x.HealthType)))
             {
-                h.ChangeHealth(-meleeDamage);
+                h.ChangeHealth(-meleeDamage, this);
             }
         }
 
@@ -106,5 +106,7 @@ namespace Player
         }
 
         #endregion
+        
+        public GameObject GetDamageObject() => gameObject;
     }
 }

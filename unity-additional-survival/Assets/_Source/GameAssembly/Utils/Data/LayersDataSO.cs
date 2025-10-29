@@ -9,5 +9,7 @@ namespace Utils.Data
         [field: SerializeField] public LayerMask BuildingsLayer { get; private set; }
         [field: SerializeField] public LayerMask ResourceLayer { get; private set; }
         [field: SerializeField] public LayerMask EnemyLayer { get; private set; }
+        [field: SerializeField] public LayerMask PlayerProjectile { get; private set; }
+        //[field: SerializeField] public LayerMask EnemyProjectile { get; private set; }
     }
 }

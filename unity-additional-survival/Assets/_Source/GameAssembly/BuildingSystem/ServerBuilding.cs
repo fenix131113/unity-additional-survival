@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Mirror;
+using Player;
 using UnityEngine;
 using Utils;
 
@@ -10,9 +11,10 @@ namespace BuildingSystem
     public class ServerBuilding : NetworkBehaviour
     {
         [field: SerializeField] public float GridSize { get; private set; } = 0.64f;
+        [field: SerializeField] public float CollisionCheckOffset { get; private set; } = 0.02f;
         [SerializeField] private int gridZoneRadius;
 
-        private List<ABuilding> _buildings = new(); //TODO: Do something with this shit
+        private readonly List<ABuilding> _buildings = new(); //TODO: Do something with this shit
         private readonly Dictionary<Vector2Int, Vector2> _allowPos = new();
 
         #region Client
@@ -36,6 +38,46 @@ namespace BuildingSystem
         }
 
         #endregion
+
+        #region Server
+
+        [Server]
+        public void Build(NetworkIdentity builder, int spawnId, Vector2 fixedPos)
+        {
+            var buildingPrefab = NetworkManager.singleton.spawnPrefabs[spawnId];
+
+            if (!buildingPrefab.TryGetComponent<ABuilding>(out var building))
+                return;
+
+            var requirementsCompleted = CheckRequirementsForPlayer(builder, building.Requirements);
+
+            if (!requirementsCompleted)
+                return;
+
+            var canPlace = IsInBuildingZone(fixedPos, out _);
+
+            if (canPlace)
+                canPlace = IsEmptyCollision(fixedPos, CollisionCheckOffset);
+
+            if (!canPlace)
+                return;
+
+            if (building.Requirements.Any(req =>
+                    !builder.GetComponent<PlayerInventory>().TryRemoveItem(req.ItemData, req.Count)))
+                return;
+
+            var spawned = Instantiate(buildingPrefab, fixedPos, Quaternion.identity);
+            NetworkServer.Spawn(spawned.gameObject);
+            _buildings.Add(spawned.GetComponent<ABuilding>());
+        }
+
+        #endregion
+
+        public bool CheckRequirementsForPlayer(NetworkIdentity playerIdentity, List<BuildingRequirements> requirements)
+        {
+            return requirements.All(req =>
+                playerIdentity.GetComponent<PlayerInventory>().HasItemWithCount(req.ItemData.ID, req.Count));
+        }
 
         public Vector2 GetFixedPosition(Vector2 pos)
         {
@@ -75,14 +117,15 @@ namespace BuildingSystem
                 fixedPos = Vector2.zero;
                 return false;
             }
-            
+
             fixedPos = _allowPos[(Vector2Int)converted];
             return _allowPos.ContainsKey((Vector2Int)converted);
         }
 
         public bool IsEmptyCollision(Vector2 fixedPos, LayerMask blockLayers, float sizeOffset = 0)
         {
-            var hit = Physics2D.BoxCast(fixedPos, Vector2.one * (GridSize - sizeOffset), 0, Vector2.zero, float.PositiveInfinity,
+            var hit = Physics2D.BoxCast(fixedPos, Vector2.one * (GridSize - sizeOffset), 0, Vector2.zero,
+                float.PositiveInfinity,
                 blockLayers);
 
             return !hit.transform;
@@ -95,14 +138,15 @@ namespace BuildingSystem
                               LayersBase.LayersData.BuildingsLayer; // Default layers
             return IsEmptyCollision(fixedPos, blockLayers, sizeOffset);
         }
-        
+
         /// Works better with fixed position
         /// <returns>Null if pos is too far from the grid</returns>
         public Vector2Int? ConvertPosToGrid(Vector2 pos, float overrideTolerance = 0.1f)
         {
-            foreach (var pair in _allowPos.Where(pair => Vector2.Distance(pair.Value, pos) <= GridSize / 2 + overrideTolerance))
+            foreach (var pair in _allowPos.Where(pair =>
+                         Vector2.Distance(pair.Value, pos) <= GridSize / 2 + overrideTolerance))
                 return pair.Key;
-            
+
             return null;
         }
 

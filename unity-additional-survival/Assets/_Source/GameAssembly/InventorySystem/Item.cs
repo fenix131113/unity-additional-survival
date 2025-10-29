@@ -37,6 +37,7 @@ namespace InventorySystem
         public void SetCount(int value)
         {
             var data = ItemsDatabase.GetItemData(ID).MaxCount;
+            
             if (value > data)
                 Count = data;
 

@@ -12,6 +12,6 @@ namespace HealthSystem.Data
         event Action OnDeath;
         
         [Server]
-        void ChangeHealth(int value){}
+        void ChangeHealth(int value, IHealthChangeSource source){}
     }
 }

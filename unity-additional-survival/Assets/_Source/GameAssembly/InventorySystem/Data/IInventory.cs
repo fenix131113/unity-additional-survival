@@ -21,5 +21,10 @@ namespace InventorySystem.Data
         {
             return false;
         }
+
+        virtual bool HasItemWithCount(int id, int count)
+        {
+            return false;
+        }
     }
 }

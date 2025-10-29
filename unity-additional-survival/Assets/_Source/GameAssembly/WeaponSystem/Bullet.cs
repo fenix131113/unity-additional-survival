@@ -6,7 +6,7 @@ using Utils;
 
 namespace WeaponSystem
 {
-    public class Bullet : NetworkBehaviour
+    public class Bullet : NetworkBehaviour, IHealthChangeSource
     {
         [SerializeField] private float speed;
         [SerializeField] private int damage;
@@ -65,7 +65,7 @@ namespace WeaponSystem
                 return;
             }
             
-            health.ChangeHealth(-damage);
+            health.ChangeHealth(-damage, this);
             Server_StopBullet();
         }
 
@@ -85,5 +85,7 @@ namespace WeaponSystem
         }
 
         #endregion
+        
+        public GameObject GetDamageObject() => gameObject;
     }
 }

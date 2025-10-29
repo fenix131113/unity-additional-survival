@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core.GameStatesSystem;
+using Mirror;
 using Player;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using VContainer;
 
 namespace BuildingSystem
 {
-    public class ClientBuild : MonoBehaviour
+    public class ClientBuild : NetworkBehaviour
     {
         [SerializeField] private SpriteRenderer visualPlacementRender;
         [SerializeField] private Color placementAllowColor;
         [SerializeField] private Color placementBlockedColor;
         [SerializeField] private float placementColorAlpha;
-        [SerializeField] private float collisionCheckOffset = 0.02f;
 
         [Inject] private InputSystem_Actions _input;
         [Inject] private GameStates _gameState;
@@ -52,7 +53,7 @@ namespace BuildingSystem
                 visualPlacementRender.gameObject.SetActive(canPlace);
 
                 if(canPlace)
-                    canPlace = _serverBuilding.IsEmptyCollision(fixedPos, collisionCheckOffset);
+                    canPlace = _serverBuilding.IsEmptyCollision(fixedPos, _serverBuilding.CollisionCheckOffset);
                 
                 _lastPlacementFixedPos = fixedPos;
                 visualPlacementRender.transform.position = _lastPlacementFixedPos;
@@ -71,10 +72,16 @@ namespace BuildingSystem
 
         private void OnBuildPlaceClicked(InputAction.CallbackContext callbackContext)
         {
-            if(!IsInBuildMode)
+            if(!IsInBuildMode || (EventSystem.current && EventSystem.current.currentSelectedGameObject))
                 return;
             
-            //TODO: Make place system and prevent block placement when click ui
+            var cursorPos = Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+            var canPlace = _serverBuilding.IsInBuildingZone(cursorPos, out var fixedPos);
+
+            if (!canPlace)
+                return;
+            
+            Cmd_PlaceBuilding(NetworkClient.localPlayer, NetworkManager.singleton.spawnPrefabs.IndexOf(_selector.CurrentSelection.gameObject), fixedPos);
         }
 
         private void OnBuildModeClicked(InputAction.CallbackContext callbackContext)
@@ -86,8 +93,7 @@ namespace BuildingSystem
                 ExitBuildMode();
             else
                 EnterBuildMode();
-
-            _selector.OnBuildingModeChanged(IsInBuildMode);
+            
             OnBuildModeChanged?.Invoke();
         }
 
@@ -110,6 +116,16 @@ namespace BuildingSystem
             IsInBuildMode = false;
             _buildBlockers.ForEach(x => x.Dispose());
         }
+
+        #region Server
+
+        [Command(requiresAuthority = false)]
+        private void Cmd_PlaceBuilding(NetworkIdentity builder, int spawnId, Vector2 fixedPos)
+        {
+            _serverBuilding.Build(builder, spawnId, fixedPos);
+        }
+
+        #endregion
 
         private void Bind()
         {

@@ -11,9 +11,20 @@ namespace Player
     public class PlayerInventory : NetworkBehaviour, IInventory
     {
         [SerializeField] private List<ItemDataSO> allowItemsList = new();
-        
+
+        /// <summary>
+        /// Call on the LOCAL CLIENT and SERVER
+        /// </summary>
         public event Action<Item> OnInventoryItemAdded;
+
+        /// <summary>
+        /// Call on the LOCAL CLIENT and SERVER
+        /// </summary>
         public event Action<Item> OnInventoryItemRemoved;
+
+        /// <summary>
+        /// Call on the LOCAL CLIENT and SERVER
+        /// </summary>
         public event Action<Item> OnInventoryItemUpdated;
 
         private readonly SyncList<Item> _items = new();
@@ -33,7 +44,7 @@ namespace Player
         private void Rpc_InvokeOnItemUpdated(Item item)
         {
             _items.Find(x => x.ID == item.ID).SetCount(item.Count);
-            
+
             OnInventoryItemUpdated?.Invoke(item);
         }
 
@@ -57,10 +68,13 @@ namespace Player
 
             var result = find.TryAddCount(count);
 
-            if (result)
-                Rpc_InvokeOnItemUpdated(find);
+            if (!result)
+                return false;
 
-            return result;
+            Rpc_InvokeOnItemUpdated(find);
+            OnInventoryItemUpdated?.Invoke(find);
+
+            return true;
         }
 
         /// <summary>
@@ -71,10 +85,34 @@ namespace Player
         {
             var find = _items.Find(x => x.ID == id);
 
-            return find != null && find.TryRemoveCount(count);
+            var result = find != null && find.TryRemoveCount(count);
+
+            if (!result)
+                return false;
+
+            Rpc_InvokeOnItemUpdated(find);
+            OnInventoryItemUpdated?.Invoke(find);
+
+            return true;
         }
 
         #endregion
+
+        public bool HasItemWithCount(int id, int count)
+        {
+            var currentCount = 0;
+
+            foreach (var item in _items)
+            {
+                if (item.ID == id)
+                    currentCount += item.Count;
+
+                if (currentCount >= count)
+                    return true;
+            }
+
+            return false;
+        }
 
         public List<Item> GetItems() => _items.ToList();
     }

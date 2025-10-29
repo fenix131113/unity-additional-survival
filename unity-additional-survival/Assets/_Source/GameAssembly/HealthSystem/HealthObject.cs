@@ -45,7 +45,7 @@ namespace HealthSystem
         public override void OnStartServer() => Health = startHealth;
 
         [Server]
-        public void ChangeHealth(int value)
+        public void ChangeHealth(int value, IHealthChangeSource source)
         {
             Health = Mathf.Clamp(Health + value, 0, maxHealth);
 

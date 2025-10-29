@@ -24,3 +24,6 @@ MonoBehaviour:
   <EnemyLayer>k__BackingField:
     serializedVersion: 2
     m_Bits: 128
+  <PlayerProjectile>k__BackingField:
+    serializedVersion: 2
+    m_Bits: 512

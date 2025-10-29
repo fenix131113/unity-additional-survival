@@ -11,5 +11,7 @@ namespace InventorySystem.Data
         [field: SerializeField] public int MaxCount { get; private set; }
 
         public Item GenerateItem(int count = 1) => new(ID, count);
+        
+        public static implicit operator int(ItemDataSO data) => data.ID;
     }
 }
