@@ -40,6 +40,12 @@ namespace Player
             _items.OnRemove += (_, old) => OnInventoryItemRemoved?.Invoke(old);
         }
 
+        private void OnDestroy()
+        {
+            _items.OnAdd = null;
+            _items.OnRemove = null;
+        }
+
         [ClientRpc]
         private void Rpc_InvokeOnItemUpdated(Item item)
         {

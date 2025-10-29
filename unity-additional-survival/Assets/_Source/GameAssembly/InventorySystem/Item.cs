@@ -43,6 +43,8 @@ namespace InventorySystem
 
             Count = value;
         }
+        
+        public static implicit operator int(Item item) => item.ID;
     }
 
     public static class CustomReadWriteItem

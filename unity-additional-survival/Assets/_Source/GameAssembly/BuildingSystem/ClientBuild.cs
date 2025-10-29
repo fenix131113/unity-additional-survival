@@ -10,7 +10,7 @@ using VContainer;
 
 namespace BuildingSystem
 {
-    public class ClientBuild : NetworkBehaviour
+    public class ClientBuild : NetworkBehaviour //TODO: Make objects deleting
     {
         [SerializeField] private SpriteRenderer visualPlacementRender;
         [SerializeField] private Color placementAllowColor;
@@ -24,6 +24,7 @@ namespace BuildingSystem
 
         private Vector2 _lastPlacementFixedPos = Vector2.positiveInfinity;
         private readonly List<FlagBlocker> _buildBlockers = new();
+        private bool _tryPlaceNextFrame;
         
         /// <summary>
         /// Returns real values only on the client
@@ -43,7 +44,23 @@ namespace BuildingSystem
         {
             if (!IsInBuildMode)
                 return;
+            
+            if (_tryPlaceNextFrame)
+            {
+                _tryPlaceNextFrame = false;
 
+                if (EventSystem.current && EventSystem.current.IsPointerOverGameObject())
+                    return;
+        
+                PlaceBuilding();
+            }
+
+            if (EventSystem.current && EventSystem.current.IsPointerOverGameObject())
+            {
+                visualPlacementRender.gameObject.SetActive(false);
+                return;
+            }
+            
             var cursorPos = Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
             if (Vector2.Distance(_lastPlacementFixedPos, cursorPos) > _serverBuilding.GridSize / 2)
@@ -72,7 +89,15 @@ namespace BuildingSystem
 
         private void OnBuildPlaceClicked(InputAction.CallbackContext callbackContext)
         {
-            if(!IsInBuildMode || (EventSystem.current && EventSystem.current.currentSelectedGameObject))
+            if(!IsInBuildMode)
+                return;
+            
+            _tryPlaceNextFrame = true;
+        }
+
+        private void PlaceBuilding()
+        {
+            if(!IsInBuildMode)
                 return;
             
             var cursorPos = Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue());

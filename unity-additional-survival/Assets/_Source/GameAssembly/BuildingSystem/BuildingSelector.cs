@@ -1,6 +1,5 @@
 ﻿using System;
 using BuildingSystem.View;
-using DG.Tweening;
 using UnityEngine;
 
 namespace BuildingSystem
