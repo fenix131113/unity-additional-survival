@@ -78,7 +78,7 @@ namespace Core.Network
 
         private void OnCreateGameCharacter(NetworkConnectionToClient conn, GlobalMessages.CreateGamePlayerMessage _)
         {
-            var created = Instantiate(playerPrefab);
+            var created = Instantiate(playerPrefab, new Vector3(8, 0, 0), Quaternion.identity);
             NetworkServer.Spawn(created);
             NetworkServer.AddPlayerForConnection(conn, created);
         }

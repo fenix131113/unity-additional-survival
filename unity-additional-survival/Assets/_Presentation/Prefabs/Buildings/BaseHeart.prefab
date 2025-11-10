@@ -108,12 +108,16 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  <VisualRoot>k__BackingField: {fileID: 2134481518514787762}
+  startHealth: 20
+  instantDestroyOnDeath: 1
+  <MaxHealth>k__BackingField: 20
   <HealthType>k__BackingField: 3
+  <Requirements>k__BackingField: []
+  <VisualRoot>k__BackingField: {fileID: 2134481518514787762}
   <IgnoreDamageFrom>k__BackingField:
     serializedVersion: 2
     m_Bits: 512
-  <MaxHealth>k__BackingField: 20
+  <Removable>k__BackingField: 0
 --- !u!61 &2040632194798818902
 BoxCollider2D:
   m_ObjectHideFlags: 0

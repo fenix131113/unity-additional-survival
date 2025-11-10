@@ -10,6 +10,8 @@ namespace ResourceObjects
         [SerializeField] private ResourceCollectable dropPrefab;
         [SerializeField] private int minDropAmount;
         [SerializeField] private int maxDropAmount;
+        
+        private bool _dropped;
 
         #region Server
 
@@ -18,7 +20,12 @@ namespace ResourceObjects
         [Server]
         private void Drop()
         {
-            var dropAmount = Random.Range(minDropAmount, maxDropAmount);
+            if(_dropped)
+                return;
+            
+            _dropped = true;
+            
+            var dropAmount = Random.Range(minDropAmount, maxDropAmount + 1);
 
             for (var i = 0; i < dropAmount; i++)
             {

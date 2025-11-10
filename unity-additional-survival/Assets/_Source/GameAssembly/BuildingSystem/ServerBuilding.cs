@@ -14,7 +14,7 @@ namespace BuildingSystem
         [field: SerializeField] public float CollisionCheckOffset { get; private set; } = 0.02f;
         [SerializeField] private int gridZoneRadius;
 
-        private readonly List<ABuilding> _buildings = new(); //TODO: Do something with this shit
+        public readonly SyncList<ABuilding> Buildings = new(); //TODO: Do something with this shit
         private readonly Dictionary<Vector2Int, Vector2> _allowPos = new();
 
         #region Client
@@ -68,7 +68,7 @@ namespace BuildingSystem
 
             var spawned = Instantiate(buildingPrefab, fixedPos, Quaternion.identity);
             NetworkServer.Spawn(spawned.gameObject);
-            _buildings.Add(spawned.GetComponent<ABuilding>());
+            Buildings.Add(spawned.GetComponent<ABuilding>());
         }
 
         #endregion

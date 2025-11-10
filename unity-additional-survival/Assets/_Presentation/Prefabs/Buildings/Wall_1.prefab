@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7261594438450376665}
   - component: {fileID: 9169867009787243896}
   - component: {fileID: 5551813164493834615}
+  - component: {fileID: -2390774218651706329}
   m_Layer: 8
   m_Name: Wall_1
   m_TagString: Untagged
@@ -108,17 +109,20 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  startHealth: 5
+  instantDestroyOnDeath: 1
+  <MaxHealth>k__BackingField: 5
+  <HealthType>k__BackingField: 3
   <Requirements>k__BackingField:
   - <ItemData>k__BackingField: {fileID: 11400000, guid: 803345b934ba93044ba8a1fcea7c6c0c, type: 2}
     <Count>k__BackingField: 2
   - <ItemData>k__BackingField: {fileID: 11400000, guid: 0eb303595c418f949b99a91a170fc8e1, type: 2}
     <Count>k__BackingField: 1
   <VisualRoot>k__BackingField: {fileID: 2057510098694031209}
-  <HealthType>k__BackingField: 3
   <IgnoreDamageFrom>k__BackingField:
     serializedVersion: 2
     m_Bits: 512
-  <MaxHealth>k__BackingField: 5
+  <Removable>k__BackingField: 1
 --- !u!114 &9169867009787243896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,3 +186,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.64, y: 0.64}
   m_EdgeRadius: 0
+--- !u!114 &-2390774218651706329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8560434332589850366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183748dd497aa473a98ff0cd8cb67fc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: AstarPathfindingProject::Pathfinding.DynamicGridObstacle
+  version: 1
+  uniqueID: 1492939703204644436
+  updateError: 1
+  checkTime: 1

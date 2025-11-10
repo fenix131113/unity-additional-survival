@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8075842876205996161}
   - component: {fileID: 1888518616572235700}
+  - component: {fileID: 5509074784414710797}
   - component: {fileID: 7329616307218972564}
   - component: {fileID: -446701588625430383}
   - component: {fileID: 3368459893437982592}
@@ -167,6 +168,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &5509074784414710797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2939467186402658877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f26e3c00d44746adbc63d5017cf2a4cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GameAssembly::HealthSystem.HealthObject
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  startHealth: 20
+  instantDestroyOnDeath: 0
+  <MaxHealth>k__BackingField: 20
+  <HealthType>k__BackingField: 1
 --- !u!114 &7329616307218972564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -273,6 +293,7 @@ MonoBehaviour:
   startWeapons:
   - {fileID: 5865511114405057146}
   - {fileID: 1517545608263510458}
+  weaponsContainer: {fileID: 5610475367225394054}
 --- !u!114 &7944257961685185256
 MonoBehaviour:
   m_ObjectHideFlags: 0
