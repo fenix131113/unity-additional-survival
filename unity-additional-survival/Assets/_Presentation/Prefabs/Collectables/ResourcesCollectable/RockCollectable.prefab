@@ -159,6 +159,7 @@ MonoBehaviour:
   moveExceptForce: 0.5
   rotateForceEdge: 0.8
   rotateExceptForce: 0.2
+  deleteTime: 15
 --- !u!114 &2463653061312754181
 MonoBehaviour:
   m_ObjectHideFlags: 0

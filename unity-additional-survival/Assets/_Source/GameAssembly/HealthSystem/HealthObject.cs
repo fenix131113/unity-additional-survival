@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using HealthSystem.Data;
 using Mirror;
 using UnityEngine;
@@ -31,12 +32,10 @@ namespace HealthSystem
         protected virtual void ClientOnHealthChanged(int oldValue, int newValue)
         {
             OnHealthChanged?.Invoke(oldValue, newValue);
-
-            if (Health != 0)
-                return;
-
-            OnDeath?.Invoke();
         }
+
+        [ClientRpc]
+        private void Rpc_OnDeath() => OnDeath?.Invoke();
 
         #endregion
 
@@ -53,10 +52,11 @@ namespace HealthSystem
 
             if (Health != 0)
                 return;
-            
+
+            Rpc_OnDeath();
             OnDeath?.Invoke();
             if (instantDestroyOnDeath)
-                NetworkServer.Destroy(gameObject);
+                Destroy(gameObject);
         }
 
         #endregion
@@ -64,7 +64,10 @@ namespace HealthSystem
         protected void InvokeChangeHealth(int oldValue, int newValue) => OnHealthChanged?.Invoke(oldValue, newValue);
         protected void InvokeOnDeath() => OnDeath?.Invoke();
         
-        protected virtual void OnDestroy() => Expose();
+        protected virtual void OnDestroy()
+        {
+            Expose();
+        }
 
         protected virtual void Expose()
         {

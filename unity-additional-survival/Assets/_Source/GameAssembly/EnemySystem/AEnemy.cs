@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using BuildingSystem.Buildings;
+﻿using System.Collections;
+using System.Linq;
 using HealthSystem;
 using Mirror;
 using Pathfinding;
@@ -27,8 +26,6 @@ namespace EnemySystem
                 destinationSetter.enabled = false;
                 return;
             }
-
-            SetTarget(FindFirstObjectByType<BaseHeart>());
         }
 
         protected virtual void Update()
@@ -65,20 +62,20 @@ namespace EnemySystem
         {
             if (p.error)
             {
-                Debug.Log(p.errorLog);
                 Target = null;
-                StartCoroutine(TestCoroutine());
+                StartCoroutine(SetRndPlayerAsTargetRoutine());
                 //TODO: Go to another target
             }
             else
                 path.destination = Target.transform.position;
         }
 
-        private IEnumerator TestCoroutine()
+        private IEnumerator SetRndPlayerAsTargetRoutine()
         {
             yield return new WaitForSeconds(0.5f);
 
-            SetTarget(FindFirstObjectByType<PlayerMovement>().GetComponent<HealthObject>());
+            SetTarget(NetworkServer.connections.Select(x => x.Value.identity).ToList()[
+                Random.Range(0, NetworkServer.connections.Count)].GetComponent<HealthObject>());
         }
 
         #endregion

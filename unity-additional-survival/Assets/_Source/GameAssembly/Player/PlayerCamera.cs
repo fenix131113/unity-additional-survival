@@ -19,12 +19,18 @@ namespace Player
             if (!_cCamera)
                 Debug.LogWarning("Couldn't find any CinemachineCamera");
 #endif
-
-            var target = new CameraTarget { TrackingTarget = transform};
-
             if (!_cCamera)
                 return;
             
+            SetTarget(transform);
+        }
+
+        public void SetTarget(Transform newTarget)
+        {
+            if(!_cCamera)
+                return;
+            
+            var target = new CameraTarget { TrackingTarget = newTarget};
             _cCamera.Target = target;
             _cCamera.gameObject.SetActive(true);
         }

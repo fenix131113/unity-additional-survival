@@ -62,15 +62,18 @@ namespace Core.Network
 
         public override void OnServerDisconnect(NetworkConnectionToClient conn)
         {
+            if (conn == null)
+                return;
+            
             NetworkServer.DestroyPlayerForConnection(conn);
             _playersLobby?.UnregisterPlayer(conn.connectionId.ToString());
         }
 
         private void OnCreateLobbyCharacter(NetworkConnectionToClient conn, GlobalMessages.CreateLobbyPlayerMessage _)
         {
-            if(SceneManager.GetActiveScene().name != SceneNames.MENU_SCENE)
+            if (SceneManager.GetActiveScene().name != SceneNames.MENU_SCENE)
                 return;
-            
+
             var created = Instantiate(lobbyPlayerPrefab);
             NetworkServer.Spawn(created);
             NetworkServer.AddPlayerForConnection(conn, created);

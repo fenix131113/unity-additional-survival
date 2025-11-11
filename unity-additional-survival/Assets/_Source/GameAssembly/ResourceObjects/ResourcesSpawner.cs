@@ -13,8 +13,11 @@ namespace ResourceObjects
         [SerializeField] private int maxSpawnCount;
         [SerializeField] private List<Transform> spawnPoints;
         [SerializeField] private List<ResourceSpawnGroup> resourceSpawnGroups;
+        
         private readonly List<GameObject> _spawned = new();
         private readonly List<Transform> _busySpawnPoints = new();
+
+        private int _lastRndCount;
 
         #region Server
 
@@ -22,26 +25,16 @@ namespace ResourceObjects
 
         public void SpawnResources()
         {
-            ClearSpawnedResources();
-            
-            for (var i = Random.Range(minSpawnCount, maxSpawnCount + 1); i > 0; i--)
+            ReplaceSpawnedResources();
+
+            _lastRndCount = Random.Range(minSpawnCount, maxSpawnCount + 1);
+            for (var i = _lastRndCount; i > 0; i--)
             {
-                GameObject selectedPrefab = null;
-                
-                foreach (var spawnGroup in resourceSpawnGroups)
-                {
-                    if (Random.Range(0f, 1f) <= spawnGroup.chance)
-                    {
-                        selectedPrefab = spawnGroup.prefab;
-                        break;
-                    }
-                    
-                    if(spawnGroup == resourceSpawnGroups.Last())
-                        selectedPrefab = spawnGroup.prefab;
-                }
+                var selectedPrefab = GetRandomPrefab();
                 
                 var selectedSpawn = Random.Range(0, spawnPoints.Count);
                 var obj = Instantiate(selectedPrefab, spawnPoints[selectedSpawn].position, Quaternion.identity);
+                _spawned.Add(obj);
                 _busySpawnPoints.Add(spawnPoints[selectedSpawn]);
                 spawnPoints.Remove(spawnPoints[selectedSpawn]);
                 
@@ -49,16 +42,52 @@ namespace ResourceObjects
             }
         }
 
-        public void ClearSpawnedResources()
+        public void ReplaceSpawnedResources()
         {
-            foreach (var obj in _spawned)
-                NetworkServer.Destroy(obj);
-            
             spawnPoints.AddRange(_busySpawnPoints);
             _busySpawnPoints.Clear();
+
+            var existSpawned = _spawned.Where(obj => obj).ToList();
+            while (existSpawned.Count < _lastRndCount)
+            {
+                var selectedPrefab = GetRandomPrefab();
+                var obj = Instantiate(selectedPrefab, spawnPoints[0].position, Quaternion.identity);
+                existSpawned.Add(obj);
+                NetworkServer.Spawn(obj);
+            }
+            
+            foreach (var o in existSpawned)
+            {
+                var selectedSpawn = Random.Range(0, spawnPoints.Count);
+                
+                o.transform.position = spawnPoints[selectedSpawn].position;
+                
+                _busySpawnPoints.Add(spawnPoints[selectedSpawn]);
+                spawnPoints.Remove(spawnPoints[selectedSpawn]);
+            }
+        }
+
+        private GameObject GetRandomPrefab()
+        {
+            GameObject selectedPrefab = null;
+            
+            foreach (var spawnGroup in resourceSpawnGroups)
+            {
+                if (Random.Range(0f, 1f) <= spawnGroup.chance)
+                {
+                    selectedPrefab = spawnGroup.prefab;
+                    break;
+                }
+                    
+                if(spawnGroup == resourceSpawnGroups.Last())
+                    selectedPrefab = spawnGroup.prefab;
+            }
+
+            return selectedPrefab;
         }
 
         #endregion
+        
         [Serializable]
         public class ResourceSpawnGroup
         {

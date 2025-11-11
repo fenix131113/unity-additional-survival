@@ -6,7 +6,7 @@ namespace HealthSystem
     {
         [SerializeField] protected HealthObject healthTarget;
 
-        protected void Start() => Bind();
+        protected virtual void Start() => Bind();
 
         protected virtual void DrawHealth(int oldValue, int newValue)
         {

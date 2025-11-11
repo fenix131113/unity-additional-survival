@@ -14,17 +14,28 @@ namespace ResourceObjects.Visualizers
         [SerializeField] private float hitColorDuration;
 
         private Color _baseColor;
+        private Tween _shakeTween;
+        private Tween _colorTween;
 
         private void Awake() => _baseColor = visualRoot.color;
+
+        private void OnDestroy()
+        {
+            _shakeTween?.Kill();
+            _colorTween?.Kill();
+        }
 
         protected override void DrawHealth(int oldValue, int newValue)
         {
             if (newValue >= oldValue)
                 return;
 
-            shakeRoot.DOShakePosition(shakeDuration, shakeStrength);
-            visualRoot.DOColor(hitColor, hitColorDuration / 2)
-                .onComplete += () => visualRoot.DOColor(_baseColor, hitColorDuration / 2);
+            _shakeTween?.Kill();
+            _colorTween?.Kill();
+            
+            _shakeTween = shakeRoot.DOShakePosition(shakeDuration, shakeStrength);
+            _colorTween = visualRoot.DOColor(hitColor, hitColorDuration / 2);
+            _colorTween.onComplete += () => visualRoot.DOColor(_baseColor, hitColorDuration / 2);
         }
     }
 }

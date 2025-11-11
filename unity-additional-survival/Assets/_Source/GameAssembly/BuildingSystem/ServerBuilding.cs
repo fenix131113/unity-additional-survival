@@ -14,10 +14,8 @@ namespace BuildingSystem
         [field: SerializeField] public float CollisionCheckOffset { get; private set; } = 0.02f;
         [SerializeField] private int gridZoneRadius;
 
-        public readonly SyncList<ABuilding> Buildings = new(); //TODO: Do something with this shit
+        public readonly SyncList<ABuilding> Buildings = new();
         private readonly Dictionary<Vector2Int, Vector2> _allowPos = new();
-
-        #region Client
 
         private void Awake()
         {
@@ -36,8 +34,6 @@ namespace BuildingSystem
                 y += GridSize;
             }
         }
-
-        #endregion
 
         #region Server
 
@@ -75,8 +71,10 @@ namespace BuildingSystem
 
         public bool CheckRequirementsForPlayer(NetworkIdentity playerIdentity, List<BuildingRequirements> requirements)
         {
-            return requirements.All(req =>
+            var result = !playerIdentity.GetComponent<PlayerDeath>().IsDead && requirements.All(req =>
                 playerIdentity.GetComponent<PlayerInventory>().HasItemWithCount(req.ItemData.ID, req.Count));
+            
+            return result;
         }
 
         public Vector2 GetFixedPosition(Vector2 pos)

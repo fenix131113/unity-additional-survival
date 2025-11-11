@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Core.GameStatesSystem;
 using Mirror;
@@ -22,36 +23,47 @@ namespace BuildingSystem
         [Inject] private ServerBuilding _serverBuilding;
         [Inject] private BuildingSelector _selector;
 
+        private PlayerDeath _playerDeath;
         private Vector2 _lastPlacementFixedPos = Vector2.positiveInfinity;
         private readonly List<FlagBlocker> _buildBlockers = new();
         private bool _tryPlaceNextFrame;
-        
+
         /// <summary>
         /// Returns real values only on the client
         /// </summary>
         public bool IsInBuildMode { get; private set; }
-        
+
         /// <summary>
         /// Called only on the client
         /// </summary>
         public event Action OnBuildModeChanged;
 
-        private void Start() => Bind();
+        private void Start()
+        {
+            StartCoroutine(WaitForPlayer());
+        }
 
         private void OnDestroy() => Expose();
 
         private void Update()
         {
-            if (!IsInBuildMode)
+            if(!_playerDeath)
                 return;
             
+            if (!IsInBuildMode || _playerDeath.IsDead)
+            {
+                if (_playerDeath.IsDead && IsInBuildMode)
+                    ExitBuildMode();
+                return;
+            }
+
             if (_tryPlaceNextFrame)
             {
                 _tryPlaceNextFrame = false;
 
                 if (EventSystem.current && EventSystem.current.IsPointerOverGameObject())
                     return;
-        
+
                 PlaceBuilding();
             }
 
@@ -60,7 +72,7 @@ namespace BuildingSystem
                 visualPlacementRender.gameObject.SetActive(false);
                 return;
             }
-            
+
             var cursorPos = Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 
             if (Vector2.Distance(_lastPlacementFixedPos, cursorPos) > _serverBuilding.GridSize / 2)
@@ -69,13 +81,13 @@ namespace BuildingSystem
 
                 visualPlacementRender.gameObject.SetActive(canPlace);
 
-                if(canPlace)
+                if (canPlace)
                     canPlace = _serverBuilding.IsEmptyCollision(fixedPos, _serverBuilding.CollisionCheckOffset);
-                
+
                 _lastPlacementFixedPos = fixedPos;
                 visualPlacementRender.transform.position = _lastPlacementFixedPos;
                 visualPlacementRender.color = canPlace ? placementAllowColor : placementBlockedColor;
-                
+
                 var color = visualPlacementRender.color;
                 color.a = placementColorAlpha;
                 visualPlacementRender.color = color;
@@ -89,36 +101,37 @@ namespace BuildingSystem
 
         private void OnBuildPlaceClicked(InputAction.CallbackContext callbackContext)
         {
-            if(!IsInBuildMode)
+            if (!IsInBuildMode)
                 return;
-            
+
             _tryPlaceNextFrame = true;
         }
 
         private void PlaceBuilding()
         {
-            if(!IsInBuildMode)
+            if (!IsInBuildMode)
                 return;
-            
+
             var cursorPos = Camera.main!.ScreenToWorldPoint(Mouse.current.position.ReadValue());
             var canPlace = _serverBuilding.IsInBuildingZone(cursorPos, out var fixedPos);
 
             if (!canPlace)
                 return;
-            
-            Cmd_PlaceBuilding(NetworkClient.localPlayer, NetworkManager.singleton.spawnPrefabs.IndexOf(_selector.CurrentSelection.gameObject), fixedPos);
+
+            Cmd_PlaceBuilding(NetworkClient.localPlayer,
+                NetworkManager.singleton.spawnPrefabs.IndexOf(_selector.CurrentSelection.gameObject), fixedPos);
         }
 
         private void OnBuildModeClicked(InputAction.CallbackContext callbackContext)
         {
-            if(!_gameState.PlayerBuildModeChange)
+            if (!_gameState.PlayerBuildModeChange)
                 return;
-            
+
             if (IsInBuildMode)
                 ExitBuildMode();
             else
                 EnterBuildMode();
-            
+
             OnBuildModeChanged?.Invoke();
         }
 
@@ -165,5 +178,14 @@ namespace BuildingSystem
             _input.Player.Shoot.performed -= OnBuildPlaceClicked;
             _selector.OnSelectionChanged -= OnSelectedBuildingChanged;
         }
-    }
+
+        private IEnumerator WaitForPlayer()
+        {
+            while (!NetworkClient.localPlayer)
+                yield return null;
+            
+            _playerDeath = NetworkClient.localPlayer.GetComponent<PlayerDeath>();
+            Bind();
+        }
+}
 }

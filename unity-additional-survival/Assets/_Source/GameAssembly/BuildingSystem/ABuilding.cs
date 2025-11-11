@@ -37,7 +37,8 @@ namespace BuildingSystem
                 return;
             
             OnDeathLogic();
-            if (instantDestroyOnDeath)
+            
+            if (instantDestroyOnDeath && NetworkServer.active)
                 NetworkServer.Destroy(gameObject);
         }
 

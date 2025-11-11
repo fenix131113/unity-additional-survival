@@ -55,7 +55,7 @@ namespace Player
 
         private void OnHitInput(InputAction.CallbackContext context)
         {
-            if(_gameStates.PlayerAttack)
+            if(_gameStates.PlayerAttack && _input.Player.enabled)
                 Cmd_Attack();
         }
 

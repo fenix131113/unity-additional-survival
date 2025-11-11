@@ -1,4 +1,5 @@
-﻿using InventorySystem;
+﻿using System.Collections;
+using InventorySystem;
 using Mirror;
 using UnityEngine;
 using Utils;
@@ -12,6 +13,7 @@ namespace ResourceObjects
         [SerializeField] private float moveExceptForce;
         [SerializeField] private float rotateForceEdge;
         [SerializeField] private float rotateExceptForce;
+        [SerializeField] private float deleteTime;
 
         private void Awake()
         {
@@ -21,9 +23,14 @@ namespace ResourceObjects
 
         #region Server
 
+        private void OnDestroy() => StopAllCoroutines();
+
         [Server]
         public void ThrowCollectable()
         {
+            if (isServer && deleteTime > 0)
+                StartCoroutine(DestroyCoroutine());
+            
             rb.AddForce(
                 new Vector2(
                     RandomExtensions.RandomExceptRange(-moveForceEdge, moveForceEdge, -moveExceptForce,
@@ -34,6 +41,14 @@ namespace ResourceObjects
             rb.AddTorque(
                 RandomExtensions.RandomExceptRange(-rotateForceEdge, rotateForceEdge, -rotateExceptForce,
                     rotateExceptForce), ForceMode2D.Impulse);
+        }
+
+        [Server]
+        private IEnumerator DestroyCoroutine()
+        {
+            yield return new WaitForSeconds(deleteTime);
+            
+            NetworkServer.Destroy(gameObject);
         }
 
         #endregion

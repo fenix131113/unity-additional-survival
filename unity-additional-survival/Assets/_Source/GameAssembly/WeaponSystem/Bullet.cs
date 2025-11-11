@@ -15,6 +15,7 @@ namespace WeaponSystem
         
         private Weapon _weapon;
         private BulletsPool _pool;
+        private bool _hit;
 
         #region Client
 
@@ -38,6 +39,7 @@ namespace WeaponSystem
             if(!isServer)
                 return;
 
+            _hit = false;
             StartCoroutine(TimeDisableCoroutine());
         }
 
@@ -54,9 +56,10 @@ namespace WeaponSystem
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(!isServer || !LayerService.CheckLayersEquality(other.gameObject.layer, triggerLayers))
+            if(!isServer || !LayerService.CheckLayersEquality(other.gameObject.layer, triggerLayers) || _hit)
                 return;
 
+            _hit = true;
             var health = other.gameObject.GetComponent<IHealth>();
 
             if (health == null)

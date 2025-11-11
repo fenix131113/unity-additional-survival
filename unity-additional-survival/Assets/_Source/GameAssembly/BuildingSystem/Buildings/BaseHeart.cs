@@ -1,14 +1,13 @@
-﻿using UnityEngine;
+﻿using Utils;
 
 namespace BuildingSystem.Buildings
 {
     public class BaseHeart : ABuilding
     {
-        protected override void OnDeathLogic()
+        protected override void OnDeathLogic() // Called on the server
         {
             base.OnDeathLogic();
-            Debug.Log("Game Over!!! Heart is destroyed!");
-            //TODO: Do death logic
+            ShutdownUtil.Shutdown();
         }
     }
 }
